@@ -14,13 +14,22 @@ module.exports = {
        const id = db('Dishes').insert(dish);
        return id;
     },
-    getRecipes(){
-        return db('Recipes').select('Id','Name').orderBy('Name')
-    },
     addRecipe(recipe){
         const id = db('Recipes').insert(recipe);
         return id;
-    }
+    },
+    getRecipes(){
+        return db('Recipes').select('Id','Name').orderBy('Name')
+    },
+    getShoppingList(DishId){
 
+    const x =  db.from('Ingredients')
+          .innerJoin('Mixture','Mixture.IngredientId', 'Ingredients.Id')
+          .innerJoin('Recipes','Recipes.Id', 'Mixture.RecipeId')
+          .innerJoin('Dishes', 'Dishes.RecipeId','Recipes.Id')
+          .select('Ingredients.Name')
+          .where('Dishes.Id',DishId)
+    return x
+    }
 
 }
